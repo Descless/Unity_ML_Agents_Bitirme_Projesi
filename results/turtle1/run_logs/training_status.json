@@ -1,0 +1,65 @@
+{
+    "Turtle": {
+        "checkpoints": [
+            {
+                "steps": 11756,
+                "file_path": "results\\turtle1\\Turtle\\Turtle-11756.onnx",
+                "reward": null,
+                "creation_time": 1747762584.834048,
+                "auxillary_file_paths": [
+                    "results\\turtle1\\Turtle\\Turtle-11756.pt"
+                ]
+            },
+            {
+                "steps": 12077,
+                "file_path": "results\\turtle1\\Turtle\\Turtle-12077.onnx",
+                "reward": 0.9995999932289124,
+                "creation_time": 1747762712.8083127,
+                "auxillary_file_paths": [
+                    "results\\turtle1\\Turtle\\Turtle-12077.pt"
+                ]
+            },
+            {
+                "steps": 12525,
+                "file_path": "results\\turtle1\\Turtle\\Turtle-12525.onnx",
+                "reward": null,
+                "creation_time": 1747763161.3008502,
+                "auxillary_file_paths": [
+                    "results\\turtle1\\Turtle\\Turtle-12525.pt"
+                ]
+            },
+            {
+                "steps": 12782,
+                "file_path": "results\\turtle1\\Turtle\\Turtle-12782.onnx",
+                "reward": 0.9995999932289124,
+                "creation_time": 1747763199.4741735,
+                "auxillary_file_paths": [
+                    "results\\turtle1\\Turtle\\Turtle-12782.pt"
+                ]
+            },
+            {
+                "steps": 13975,
+                "file_path": "results\\turtle1\\Turtle\\Turtle-13975.onnx",
+                "reward": -0.4994000494480133,
+                "creation_time": 1747763632.6682498,
+                "auxillary_file_paths": [
+                    "results\\turtle1\\Turtle\\Turtle-13975.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 13975,
+            "file_path": "results\\turtle1\\Turtle.onnx",
+            "reward": -0.4994000494480133,
+            "creation_time": 1747763632.6682498,
+            "auxillary_file_paths": [
+                "results\\turtle1\\Turtle\\Turtle-13975.pt"
+            ]
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.3.0",
+        "mlagents_version": "1.1.0",
+        "torch_version": "2.2.2+cu121"
+    }
+}
