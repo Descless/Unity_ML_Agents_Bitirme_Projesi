@@ -9,15 +9,42 @@
                 "auxillary_file_paths": [
                     "results\\car1\\PlayerBehavior\\PlayerBehavior-4384.pt"
                 ]
+            },
+            {
+                "steps": 9111,
+                "file_path": "results\\car1\\PlayerBehavior\\PlayerBehavior-9111.onnx",
+                "reward": -599.053188594488,
+                "creation_time": 1750587278.2241144,
+                "auxillary_file_paths": [
+                    "results\\car1\\PlayerBehavior\\PlayerBehavior-9111.pt"
+                ]
+            },
+            {
+                "steps": 11764,
+                "file_path": "results\\car1\\PlayerBehavior\\PlayerBehavior-11764.onnx",
+                "reward": -755.810276406152,
+                "creation_time": 1750588184.9745781,
+                "auxillary_file_paths": [
+                    "results\\car1\\PlayerBehavior\\PlayerBehavior-11764.pt"
+                ]
+            },
+            {
+                "steps": 12428,
+                "file_path": "results\\car1\\PlayerBehavior\\PlayerBehavior-12428.onnx",
+                "reward": -513.5718851089478,
+                "creation_time": 1750588244.197715,
+                "auxillary_file_paths": [
+                    "results\\car1\\PlayerBehavior\\PlayerBehavior-12428.pt"
+                ]
             }
         ],
         "final_checkpoint": {
-            "steps": 4384,
+            "steps": 12428,
             "file_path": "results\\car1\\PlayerBehavior.onnx",
-            "reward": -645.0940140618218,
-            "creation_time": 1750575489.3045673,
+            "reward": -513.5718851089478,
+            "creation_time": 1750588244.197715,
             "auxillary_file_paths": [
-                "results\\car1\\PlayerBehavior\\PlayerBehavior-4384.pt"
+                "results\\car1\\PlayerBehavior\\PlayerBehavior-12428.pt"
             ]
         }
     },

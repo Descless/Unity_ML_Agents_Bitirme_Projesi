@@ -20,6 +20,9 @@ public class CarRLAgent : Agent
     private int _currentEpisode = 0;
     private float _cumulativeReward = 0f;
 
+    private float previousDistance;
+
+
 
     public override void Initialize()
     {
@@ -46,10 +49,12 @@ public class CarRLAgent : Agent
         }
         
 
-        carHandler.SetMaxSpeed(0.8f);
+        carHandler.SetMaxSpeed(1.2f);
         //_currentEpisode++;
         _cumulativeReward = 0f;
         _renderer.material.color = Color.blue;
+
+        previousDistance = Vector3.Distance(transform.localPosition, _goal.localPosition);
 
         idleTimer = 0f;
         lastPosition = transform.localPosition;
@@ -63,11 +68,10 @@ public class CarRLAgent : Agent
         // Hedefin konumunu rastgele ayarla
         float randomAngle = Random.Range(0f, 360f);
         Vector3 randomDirection = Quaternion.Euler(0f, randomAngle, 0f) * Vector3.forward;
-        float randomDistanceZ = Random.Range(30.0f, 60.0f);
-        float randomDistanceX = Random.Range(0.1f, 0.1f);
-        Vector3 goalPositionZ = transform.position + new Vector3(0,0, randomDistanceZ);
-        Vector3 goalPositionX = transform.position + new Vector3(randomDistanceX, 0, 0);
-        _goal.position = new Vector3(goalPositionX.x, 0.15f, goalPositionZ.z);
+        float randomDistanceZ = Random.Range(5.0f, 60.0f);
+        float randomDistanceX = Random.Range(-0.3f, 0.3f);
+        Vector3 goalPosition = new Vector3(randomDistanceX, transform.position.y, transform.position.z + randomDistanceZ);
+        _goal.position = goalPosition;
     }
 
     public override void CollectObservations(VectorSensor sensor)
@@ -84,15 +88,24 @@ public class CarRLAgent : Agent
         // Arabanýn rotasyonunu gözlemle
         float carRotation_normalized = (transform.localRotation.eulerAngles.y / 360f) * 2f - 1f;
         sensor.AddObservation(carRotation_normalized);
+
+        Collider[] hits = Physics.OverlapSphere(transform.position, 3f);
+        float nearestCarDist = 10f;
+
+        foreach (var hit in hits)
+        {
+            if (hit.CompareTag("Car AI"))
+            {
+                float d = Vector3.Distance(transform.position, hit.transform.position);
+                if (d < nearestCarDist) nearestCarDist = d;
+            }
+        }
+        sensor.AddObservation(nearestCarDist / 10f); // normalize edilmiþ uzaklýk
+
     }
 
-  
-    public override void OnActionReceived(ActionBuffers actions)
-    {
-        if (carHandler.GetIsCrashed())
-        {
-            EndEpisode();
-        }
+
+    public override void OnActionReceived(ActionBuffers actions) {
 
         // Eylemleri al (0: Sola dön, 1: Saða dön, 2: Düz git)
         var action = actions.DiscreteActions[0];
@@ -111,7 +124,7 @@ public class CarRLAgent : Agent
                 steerDirection = -0.005f; // Sola doðru yönlendirme
                 moveForward = 0.07f; // Ýleri doðru hareket et
                 break;
-            
+
             case 2: // Saða git
                 steerDirection = 0.005f; // Saða doðru yönlendirme
                 moveForward = 0.07f; // Ýleri doðru hareket et
@@ -130,7 +143,7 @@ public class CarRLAgent : Agent
         float distanceToGoal = Vector3.Distance(transform.localPosition, _goal.localPosition);
 
         // Hedefe yaklaþtýkça ödül ver
-        AddReward(0.01f / distanceToGoal);
+        //AddReward(0.01f / distanceToGoal);
 
 
         // Hedefi geçerse ceza ver
@@ -139,6 +152,9 @@ public class CarRLAgent : Agent
             AddReward(-0.01f);
         }
 
+        float delta = previousDistance - distanceToGoal;
+        AddReward(delta * 0.5f);         // -0.5…+0.5 aralýðý
+        previousDistance = distanceToGoal;
 
 
         _cumulativeReward = GetCumulativeReward();
@@ -152,7 +168,7 @@ public class CarRLAgent : Agent
             idleTimer += Time.fixedDeltaTime;
             if (idleTimer >= idleThreshold)
             {
-                AddReward(-200f);         // hareketsizlik cezasý (opsiyonel)
+                AddReward(-1f);         // hareketsizlik cezasý (opsiyonel)
                 isStuck = true;
                 EndEpisode(); // yeniden baþlat
 
@@ -164,7 +180,37 @@ public class CarRLAgent : Agent
             idleTimer = 0f;              // hareket ettiði için sýfýrla
             lastPosition = transform.localPosition;
         }
+
+        // Diðer araçlara olan en yakýn mesafeyi kontrol et
+        Collider[] hits = Physics.OverlapSphere(transform.position, 3f);
+        float nearestCarDist = 10f;
+
+        foreach (var hit in hits)
+        {
+            if (hit.CompareTag("Car AI") && hit.gameObject != gameObject)
+            {
+                float d = Vector3.Distance(transform.position, hit.transform.position);
+                if (d < nearestCarDist)
+                    nearestCarDist = d;
+            }
+        }
+
+        //// Yakýnlaþtýkça ceza (maks 3 birimlik alan için ters orantýlý ceza)
+        //if (nearestCarDist < 3f)
+        //{
+        //    float penalty = (3f - nearestCarDist) / 3f * 0.1f; // max 0.01 ceza
+        //    AddReward(-penalty);
+        //}
+
+
+        Heuristic(actions);
     }
+    public override void Heuristic(in ActionBuffers actionsOut)
+    {
+      
+    }
+
+
 
     private void RotateTowardsGoal()
     {
@@ -175,10 +221,15 @@ public class CarRLAgent : Agent
 
     private void OnCollisionEnter(Collision collision)
     {
-        
+        if (collision.gameObject.CompareTag("Car AI"))
+        {
+            AddReward(-1.0f); // çarptýysa ceza
+            EndEpisode();     // veya hemen bitir
+        }
+
         if (collision.gameObject.CompareTag("Wall"))
         {
-            AddReward(-10.0f);
+            AddReward(-1.0f);
             _renderer.material.color = Color.red;
         }
     }
@@ -197,15 +248,15 @@ public class CarRLAgent : Agent
     {
         if (collision.gameObject.CompareTag("Wall"))
         {
-            AddReward(-1f * Time.fixedDeltaTime);
+            AddReward(-0.1f * Time.fixedDeltaTime);
         }
     }
 
     private void GoalReached()
     {
-        AddReward(100.0f);
+        AddReward(1.0f);
         _cumulativeReward = GetCumulativeReward();
-        _renderer.material.color = Color.green; // Hedefe ulaþtýðýnda rengi deðiþtir
+        _renderer.material.color = Color.green;
 
         EndEpisode();
     }

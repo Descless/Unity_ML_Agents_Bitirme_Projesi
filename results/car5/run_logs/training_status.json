@@ -1,0 +1,65 @@
+{
+    "PlayerBehavior": {
+        "checkpoints": [
+            {
+                "steps": 7559,
+                "file_path": "results\\car5\\PlayerBehavior\\PlayerBehavior-7559.onnx",
+                "reward": -9.38313077727244,
+                "creation_time": 1750611200.0885742,
+                "auxillary_file_paths": [
+                    "results\\car5\\PlayerBehavior\\PlayerBehavior-7559.pt"
+                ]
+            },
+            {
+                "steps": 8286,
+                "file_path": "results\\car5\\PlayerBehavior\\PlayerBehavior-8286.onnx",
+                "reward": -6.62061299259464,
+                "creation_time": 1750611442.3784003,
+                "auxillary_file_paths": [
+                    "results\\car5\\PlayerBehavior\\PlayerBehavior-8286.pt"
+                ]
+            },
+            {
+                "steps": 15630,
+                "file_path": "results\\car5\\PlayerBehavior\\PlayerBehavior-15630.onnx",
+                "reward": -15.688752131217292,
+                "creation_time": 1750611944.8136172,
+                "auxillary_file_paths": [
+                    "results\\car5\\PlayerBehavior\\PlayerBehavior-15630.pt"
+                ]
+            },
+            {
+                "steps": 16536,
+                "file_path": "results\\car5\\PlayerBehavior\\PlayerBehavior-16536.onnx",
+                "reward": -32.085319608449936,
+                "creation_time": 1750612304.4267478,
+                "auxillary_file_paths": [
+                    "results\\car5\\PlayerBehavior\\PlayerBehavior-16536.pt"
+                ]
+            },
+            {
+                "steps": 23496,
+                "file_path": "results\\car5\\PlayerBehavior\\PlayerBehavior-23496.onnx",
+                "reward": -19.544842135447723,
+                "creation_time": 1750612508.830947,
+                "auxillary_file_paths": [
+                    "results\\car5\\PlayerBehavior\\PlayerBehavior-23496.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 23496,
+            "file_path": "results\\car5\\PlayerBehavior.onnx",
+            "reward": -19.544842135447723,
+            "creation_time": 1750612508.830947,
+            "auxillary_file_paths": [
+                "results\\car5\\PlayerBehavior\\PlayerBehavior-23496.pt"
+            ]
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.3.0",
+        "mlagents_version": "0.30.0",
+        "torch_version": "2.4.1+cpu"
+    }
+}

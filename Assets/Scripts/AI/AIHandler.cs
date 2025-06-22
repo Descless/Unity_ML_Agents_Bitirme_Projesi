@@ -22,7 +22,7 @@ public class AIHandler : MonoBehaviour
 
 
     float maxSteerVelocity = 2;
-    float maxForwardVelocity = 3f;
+    float maxForwardVelocity = 5;
     float accelerationMultiplier = 1f;
     float breakMultiplier = 15;
     float steeringMultiplier = 5;
@@ -33,17 +33,15 @@ public class AIHandler : MonoBehaviour
     float distanceTravelled = 0;
     public float DistanceTravelled => distanceTravelled;
 
-
-    bool isPlayer = false;
     void Start()
     {
         if (GetComponent<Agent>() != null)  // bu RL ajan ise
             return;
 
 
-        SetMaxSpeed(Random.Range(0.5f, 1f));
+        SetMaxSpeed(Random.Range(0.3f, 0.7f));
 
-        SetInput(new Vector2(0f, 1f));
+        SetInput(new Vector2(0f, 0.3f));
 
         carStartPositionZ = transform.position.z;
 
@@ -52,6 +50,9 @@ public class AIHandler : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (rb.linearVelocity.z >= maxForwardVelocity + 2)
+            rb.linearVelocity = new Vector3(rb.linearVelocity.x, rb.linearVelocity.y, maxForwardVelocity);
+
         if (input.y > 0)
             Accelerate();
         else

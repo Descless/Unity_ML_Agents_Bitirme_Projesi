@@ -24,7 +24,7 @@ public class CarHandler : MonoBehaviour
     CrashHandler crashHandler;
 
     float maxSteerVelocity = 2;
-    float maxForwardVelocity = 10;
+    float maxForwardVelocity = 20;
     float accelerationMultiplier = 3;
     float breakMultiplier = 15;
     float steeringMultiplier = 5;
@@ -65,6 +65,10 @@ public class CarHandler : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (rb.linearVelocity.z >= maxForwardVelocity)
+            rb.linearVelocity = new Vector3(rb.linearVelocity.x, rb.linearVelocity.y, maxForwardVelocity);
+
+
         if (isCrashed)
         {
             rb.linearDamping = rb.linearVelocity.z * 0.1f;
@@ -194,19 +198,13 @@ public class CarHandler : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        //Vector3 velocity = rb.linearVelocity;
-
-        //crashHandler.Crash(velocity * 45);
-
-        //isCrashed = true;
-
-        if (!isPlayer)
+        if (collision.transform.root.CompareTag("Car AI"))
         {
-            if (collision.transform.root.CompareTag("Untagged"))
-                return;
+            Vector3 velocity = rb.linearVelocity;
 
-            if (collision.transform.root.CompareTag("Car AI"))
-                return;
+            crashHandler.Crash(velocity * 45);
+
+            isCrashed = true;
         }
     }
     public void ResetCar()

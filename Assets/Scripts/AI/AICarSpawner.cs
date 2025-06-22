@@ -7,9 +7,9 @@ public class AICarSpawner : MonoBehaviour
     [SerializeField]
     GameObject[] carAIPrefabs;
 
-    GameObject[] carAIPool = new GameObject[10];
+    GameObject[] carAIPool = new GameObject[3];
 
-    WaitForSeconds wait = new WaitForSeconds(1f);
+    WaitForSeconds wait = new WaitForSeconds(2f);
 
     Transform playerCarTransform;
 
@@ -22,7 +22,6 @@ public class AICarSpawner : MonoBehaviour
     Collider[] overlappedCheckCollider = new Collider[1];
     void Start()
     {
-        playerCarTransform = GameObject.FindGameObjectWithTag("Player").transform;
 
         int prefabIndex = 0;
 
@@ -56,6 +55,8 @@ public class AICarSpawner : MonoBehaviour
 
     void SpawnNewCars()
     {
+        playerCarTransform = GameObject.FindGameObjectWithTag("Player").transform;
+
         if (Time.time - timeLastCarSpawned < 2)
         {
             return;
@@ -75,7 +76,7 @@ public class AICarSpawner : MonoBehaviour
         if (carToSpawn == null)
             return;
 
-        Vector3 spawnPosition = new Vector3 (0, 0, playerCarTransform.transform.position.z + UnityEngine.Random.Range(50,75));
+        Vector3 spawnPosition = new Vector3 (0, 0, playerCarTransform.transform.position.z + UnityEngine.Random.Range(10,25));
 
         carToSpawn.transform.position = spawnPosition;
         carToSpawn.SetActive(true);
