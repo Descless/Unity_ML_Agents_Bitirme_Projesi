@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8522500192631771351}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -42,7 +42,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5083976830853815921}
   - component: {fileID: 1275550235070130204}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Skid SFX
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -171,7 +171,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2667154260411358651}
   - component: {fileID: 8543152207112975810}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: CarEngineSFX
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -300,11 +300,9 @@ GameObject:
   m_Component:
   - component: {fileID: 2727192861568690017}
   - component: {fileID: 1550758108905789496}
-  - component: {fileID: 5162014361509739596}
-  - component: {fileID: 7586638797343359427}
   - component: {fileID: 2495409251634212213}
-  m_Layer: 0
-  m_Name: Car AI PF
+  m_Layer: 7
+  m_Name: NPC PF
   m_TagString: Car AI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -354,60 +352,6 @@ Rigidbody:
   m_Interpolate: 1
   m_Constraints: 116
   m_CollisionDetection: 0
---- !u!114 &5162014361509739596
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3354338191909724987}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 68545ca408932da40968189cd54f3ad4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rb: {fileID: 1550758108905789496}
-  gameModel: {fileID: 8522500192631771351}
-  carEngineAS: {fileID: 8543152207112975810}
-  carPitchAnimationCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: -0.0038185706
-      value: 0.4992938
-      inSlope: 43.60226
-      outSlope: 43.60226
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0.0637687
-    - serializedVersion: 3
-      time: 0.39822093
-      value: 6.211475
-      inSlope: 3.2127287
-      outSlope: 3.2127287
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.2735371
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  carSkidAS: {fileID: 1275550235070130204}
---- !u!114 &7586638797343359427
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3354338191909724987}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 65be3ce54dc01dd4799d5661b01d890d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  carHandler: {fileID: 5162014361509739596}
-  honkHornAS: {fileID: 5763208304248937}
 --- !u!114 &2495409251634212213
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -420,11 +364,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f82fe1b2d064b34b9ae7ab68295ad94, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  carHandler: {fileID: 5162014361509739596}
-  otherCarsLayerMask:
-    serializedVersion: 2
-    m_Bits: 128
   meshCollider: {fileID: 6541106136186662321}
+  rb: {fileID: 1550758108905789496}
+  gameModel: {fileID: 8522500192631771351}
 --- !u!1 &4412582022898167028
 GameObject:
   m_ObjectHideFlags: 0
@@ -434,7 +376,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6348789085932555011}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: SFX
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -469,7 +411,7 @@ GameObject:
   m_Component:
   - component: {fileID: 32001031066907012}
   - component: {fileID: 5763208304248937}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Horn SFX
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -636,9 +578,29 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -3833472936606679990, guid: 30ddfb32415b6314a99299bf78784f97, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 30ddfb32415b6314a99299bf78784f97, type: 3}
       propertyPath: m_Name
       value: car_sedan
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 30ddfb32415b6314a99299bf78784f97, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 4116213062319043852, guid: 30ddfb32415b6314a99299bf78784f97, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 7149097128867631567, guid: 30ddfb32415b6314a99299bf78784f97, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 7275953118760203564, guid: 30ddfb32415b6314a99299bf78784f97, type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

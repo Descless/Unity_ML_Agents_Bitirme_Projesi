@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 public class CarHandler : MonoBehaviour
 {
 
@@ -19,12 +20,15 @@ public class CarHandler : MonoBehaviour
     [SerializeField]
     AudioSource carSkidAS;
 
+    [SerializeField]
+    CrashHandler crashHandler;
+
     float maxSteerVelocity = 2;
-    float maxForwardVelocity = 30;
+    float maxForwardVelocity = 10;
     float accelerationMultiplier = 3;
     float breakMultiplier = 15;
     float steeringMultiplier = 5;
-    Vector2 input = Vector2.zero;
+    private Vector2 input = Vector2.zero;
 
 
     float carStartPositionZ;
@@ -33,6 +37,7 @@ public class CarHandler : MonoBehaviour
 
 
     bool isPlayer = false;
+    bool isCrashed = false;
     void Start()
     {
         isPlayer = CompareTag("Player"); 
@@ -43,6 +48,7 @@ public class CarHandler : MonoBehaviour
         }
 
         carStartPositionZ = transform.position.z;
+
     }
 
   
@@ -59,6 +65,16 @@ public class CarHandler : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (isCrashed)
+        {
+            rb.linearDamping = rb.linearVelocity.z * 0.1f;
+            rb.linearDamping = Mathf.Clamp(rb.linearDamping, 1.5f, 10);
+
+            rb.MovePosition(Vector3.Lerp(transform.position, new Vector3(0,0,transform.position.z), Time.deltaTime * 0.5f));
+
+            return;
+        }
+
         if (input.y > 0)
             Accelerate();
         else
@@ -73,7 +89,7 @@ public class CarHandler : MonoBehaviour
             rb.linearVelocity = Vector3.zero;
     }
 
-    void Accelerate()
+    public void Accelerate()
     {
         rb.linearDamping = 0;
 
@@ -91,18 +107,21 @@ public class CarHandler : MonoBehaviour
         rb.AddForce(rb.transform.forward * breakMultiplier * input.y);
     }
 
-    void Steer()
+    public void Steer()
     {
+
+
         if (Mathf.Abs(input.x)>0)
         {
             //Move car sideway
-            float speedBaseSteerLimit = rb.linearVelocity.z / 5.0f;
+            //float speedBaseSteerLimit = rb.linearVelocity.z / 5.0f;
+
+            float speedBaseSteerLimit = 1.0f;
+
             speedBaseSteerLimit = Mathf.Clamp01(speedBaseSteerLimit);
 
             rb.AddForce(rb.transform.right * steeringMultiplier * input.x * speedBaseSteerLimit);
-
-
-            //
+            
             float normalizedX = rb.linearVelocity.x / maxSteerVelocity;
 
             //no bigger than 1 in magnitued
@@ -164,8 +183,23 @@ public class CarHandler : MonoBehaviour
         maxForwardVelocity = newMaxSpeed;
     }
 
+    public bool GetIsCrashed()
+    {
+        return isCrashed;
+    }
+    public void SetIsCrashed(bool crashed)
+    {
+        isCrashed = crashed;
+    }
+
     private void OnCollisionEnter(Collision collision)
     {
+        //Vector3 velocity = rb.linearVelocity;
+
+        //crashHandler.Crash(velocity * 45);
+
+        //isCrashed = true;
+
         if (!isPlayer)
         {
             if (collision.transform.root.CompareTag("Untagged"))
@@ -174,5 +208,13 @@ public class CarHandler : MonoBehaviour
             if (collision.transform.root.CompareTag("Car AI"))
                 return;
         }
+    }
+    public void ResetCar()
+    {
+        isCrashed = false;
+        input = Vector2.zero;
+        
+        rb.linearVelocity = Vector3.zero;
+        rb.angularVelocity = Vector3.zero;
     }
 }

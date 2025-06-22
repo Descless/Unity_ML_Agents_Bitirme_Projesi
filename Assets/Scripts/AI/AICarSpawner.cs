@@ -7,9 +7,9 @@ public class AICarSpawner : MonoBehaviour
     [SerializeField]
     GameObject[] carAIPrefabs;
 
-    GameObject[] carAIPool = new GameObject[20];
+    GameObject[] carAIPool = new GameObject[10];
 
-    WaitForSeconds wait = new WaitForSeconds(0.5f);
+    WaitForSeconds wait = new WaitForSeconds(1f);
 
     Transform playerCarTransform;
 
@@ -75,7 +75,7 @@ public class AICarSpawner : MonoBehaviour
         if (carToSpawn == null)
             return;
 
-        Vector3 spawnPosition = new Vector3 (0, 0, playerCarTransform.transform.position.z + 100);
+        Vector3 spawnPosition = new Vector3 (0, 0, playerCarTransform.transform.position.z + UnityEngine.Random.Range(50,75));
 
         carToSpawn.transform.position = spawnPosition;
         carToSpawn.SetActive(true);
