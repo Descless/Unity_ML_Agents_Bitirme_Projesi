@@ -2,58 +2,58 @@
     "PlayerBehavior": {
         "checkpoints": [
             {
-                "steps": 126749,
-                "file_path": "results\\car3\\PlayerBehavior\\PlayerBehavior-126749.onnx",
-                "reward": -1.4065188199281693,
-                "creation_time": 1750605122.0748007,
+                "steps": 202074,
+                "file_path": "results\\car3\\PlayerBehavior\\PlayerBehavior-202074.onnx",
+                "reward": -1.9991906599274702,
+                "creation_time": 1750938654.549399,
                 "auxillary_file_paths": [
-                    "results\\car3\\PlayerBehavior\\PlayerBehavior-126749.pt"
+                    "results\\car3\\PlayerBehavior\\PlayerBehavior-202074.pt"
                 ]
             },
             {
-                "steps": 143701,
-                "file_path": "results\\car3\\PlayerBehavior\\PlayerBehavior-143701.onnx",
-                "reward": -0.7421364498949503,
-                "creation_time": 1750612961.4924874,
+                "steps": 203671,
+                "file_path": "results\\car3\\PlayerBehavior\\PlayerBehavior-203671.onnx",
+                "reward": -2.988671593941175,
+                "creation_time": 1750938862.4647973,
                 "auxillary_file_paths": [
-                    "results\\car3\\PlayerBehavior\\PlayerBehavior-143701.pt"
+                    "results\\car3\\PlayerBehavior\\PlayerBehavior-203671.pt"
                 ]
             },
             {
-                "steps": 145539,
-                "file_path": "results\\car3\\PlayerBehavior\\PlayerBehavior-145539.onnx",
-                "reward": -9.036245929698149,
-                "creation_time": 1750613085.9421387,
+                "steps": 220020,
+                "file_path": "results\\car3\\PlayerBehavior\\PlayerBehavior-220020.onnx",
+                "reward": 1.8464987864717841,
+                "creation_time": 1750939429.1080482,
                 "auxillary_file_paths": [
-                    "results\\car3\\PlayerBehavior\\PlayerBehavior-145539.pt"
+                    "results\\car3\\PlayerBehavior\\PlayerBehavior-220020.pt"
                 ]
             },
             {
-                "steps": 147891,
-                "file_path": "results\\car3\\PlayerBehavior\\PlayerBehavior-147891.onnx",
-                "reward": 0.07892894395627081,
-                "creation_time": 1750613330.492551,
+                "steps": 227363,
+                "file_path": "results\\car3\\PlayerBehavior\\PlayerBehavior-227363.onnx",
+                "reward": 2.0034128416861807,
+                "creation_time": 1750939848.6185184,
                 "auxillary_file_paths": [
-                    "results\\car3\\PlayerBehavior\\PlayerBehavior-147891.pt"
+                    "results\\car3\\PlayerBehavior\\PlayerBehavior-227363.pt"
                 ]
             },
             {
-                "steps": 150352,
-                "file_path": "results\\car3\\PlayerBehavior\\PlayerBehavior-150352.onnx",
-                "reward": -10.443697035312653,
-                "creation_time": 1750621303.2818937,
+                "steps": 232056,
+                "file_path": "results\\car3\\PlayerBehavior\\PlayerBehavior-232056.onnx",
+                "reward": 3.221657529142168,
+                "creation_time": 1750939988.4369671,
                 "auxillary_file_paths": [
-                    "results\\car3\\PlayerBehavior\\PlayerBehavior-150352.pt"
+                    "results\\car3\\PlayerBehavior\\PlayerBehavior-232056.pt"
                 ]
             }
         ],
         "final_checkpoint": {
-            "steps": 150352,
+            "steps": 232056,
             "file_path": "results\\car3\\PlayerBehavior.onnx",
-            "reward": -10.443697035312653,
-            "creation_time": 1750621303.2818937,
+            "reward": 3.221657529142168,
+            "creation_time": 1750939988.4369671,
             "auxillary_file_paths": [
-                "results\\car3\\PlayerBehavior\\PlayerBehavior-150352.pt"
+                "results\\car3\\PlayerBehavior\\PlayerBehavior-232056.pt"
             ]
         }
     },

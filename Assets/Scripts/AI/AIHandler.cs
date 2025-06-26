@@ -22,7 +22,7 @@ public class AIHandler : MonoBehaviour
 
 
     float maxSteerVelocity = 2;
-    float maxForwardVelocity = 5;
+    float maxForwardVelocity = 0.5f;
     float accelerationMultiplier = 1f;
     float breakMultiplier = 15;
     float steeringMultiplier = 5;
@@ -39,7 +39,7 @@ public class AIHandler : MonoBehaviour
             return;
 
 
-        SetMaxSpeed(Random.Range(0.3f, 0.7f));
+        SetMaxSpeed(Random.Range(0.3f, 0.5f));
 
         SetInput(new Vector2(0f, 0.3f));
 
@@ -50,7 +50,7 @@ public class AIHandler : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (rb.linearVelocity.z >= maxForwardVelocity + 2)
+        if (rb.linearVelocity.z >= maxForwardVelocity)
             rb.linearVelocity = new Vector3(rb.linearVelocity.x, rb.linearVelocity.y, maxForwardVelocity);
 
         if (input.y > 0)
@@ -172,9 +172,9 @@ private void Awake()
 
         float difference = desiredPositionX - transform.position.x;
 
-        if (Mathf.Abs(difference) > 0.05f)
+        if (Mathf.Abs(difference) > 0.2f)
         {
-            steerInput = 1.0f * difference;
+            steerInput = 0.5f * difference; // 1.0f yerine 0.5f ile daha yumuþak
         }
 
         steerInput = Mathf.Clamp(steerInput, -1.0f, 1.0f);

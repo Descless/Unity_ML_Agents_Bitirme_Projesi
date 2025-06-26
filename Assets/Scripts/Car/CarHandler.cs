@@ -23,9 +23,9 @@ public class CarHandler : MonoBehaviour
     [SerializeField]
     CrashHandler crashHandler;
 
-    float maxSteerVelocity = 2;
-    float maxForwardVelocity = 20;
-    float accelerationMultiplier = 3;
+    float maxSteerVelocity = 150.0f;
+    float maxForwardVelocity = 150.0f;
+    float accelerationMultiplier = 100;
     float breakMultiplier = 15;
     float steeringMultiplier = 5;
     private Vector2 input = Vector2.zero;
@@ -35,60 +35,55 @@ public class CarHandler : MonoBehaviour
     float distanceTravelled = 0;
     public float DistanceTravelled => distanceTravelled;
 
-
-    bool isPlayer = false;
     bool isCrashed = false;
     void Start()
     {
-        isPlayer = CompareTag("Player"); 
-        
-        if (isPlayer)
-        {
-            carEngineAS.Play();
-        }
 
-        carStartPositionZ = transform.position.z;
+        carEngineAS.Play(); // Araba motor sesini baþlat
+
+        carStartPositionZ = transform.position.z; // Arabanýn baþlangýç z pozisyonunu al
 
     }
 
   
     void Update()
     {
-        gameModel.transform.rotation = Quaternion.Euler(0, rb.linearVelocity.x * 5, 0);
+        SetInput(new Vector2(0,30.0f));
+        gameModel.transform.rotation = Quaternion.Euler(0, rb.linearVelocity.x * 5, 0); // Araba modelini döndür
 
-        UpdateCarAudio();
-       // if is exploded FadeOutCarAudio();
+        UpdateCarAudio(); // Araba sesini güncelle
 
-
-        distanceTravelled = transform.position.z - carStartPositionZ;
+        distanceTravelled = transform.position.z - carStartPositionZ; // Arabanýn ne kadar mesafe katettiðini hesapla
     }
 
     private void FixedUpdate()
     {
+        //Maksimum hýza kadar hýzlanmayý saðlýyor
         if (rb.linearVelocity.z >= maxForwardVelocity)
             rb.linearVelocity = new Vector3(rb.linearVelocity.x, rb.linearVelocity.y, maxForwardVelocity);
 
-
+        //Araba çarptýysa
         if (isCrashed)
         {
             rb.linearDamping = rb.linearVelocity.z * 0.1f;
             rb.linearDamping = Mathf.Clamp(rb.linearDamping, 1.5f, 10);
 
-            rb.MovePosition(Vector3.Lerp(transform.position, new Vector3(0,0,transform.position.z), Time.deltaTime * 0.5f));
+            rb.MovePosition(Vector3.Lerp(transform.position, new Vector3(0,0,transform.position.z), Time.deltaTime * 0.5f)); //Arabayý savur
 
             return;
         }
-
+        //Arabaya güç uygulandýðý zaman ileri hareket ettir
         if (input.y > 0)
             Accelerate();
         else
             rb.linearDamping = 0.2f;
-
+        //Arabaya güç uygulanmadýysa yavaþlat
         if (input.y < 0)
             Brake();
-
+        //Arabayý saða veya sola hareket ettir
         Steer();
 
+        //Geriye doðru hareket etmesini engelle
         if (rb.linearVelocity.z <= 0)
             rb.linearVelocity = Vector3.zero;
     }
@@ -97,42 +92,47 @@ public class CarHandler : MonoBehaviour
     {
         rb.linearDamping = 0;
 
+        //Maksimum hýza ulaþtýysa hýzlanmayý engelle
         if (rb.linearVelocity.z >= maxForwardVelocity)
             return;
 
-       rb.AddForce(rb.transform.forward * accelerationMultiplier * input.y);
+        //Hýzlanma kuvveti uygula
+        rb.AddForce(rb.transform.forward * accelerationMultiplier * input.y);
     }
 
     void Brake()
     {
+        //Eðer araba geri hareket ediyorsa, geri hareket etmesini engelle
         if (rb.linearVelocity.z <= 0)
             return;
 
+        //Eðer araba ileri hareket ediyorsa, fren kuvveti uygula
         rb.AddForce(rb.transform.forward * breakMultiplier * input.y);
     }
 
     public void Steer()
     {
 
-
+       
         if (Mathf.Abs(input.x)>0)
         {
-            //Move car sideway
-            //float speedBaseSteerLimit = rb.linearVelocity.z / 5.0f;
-
+            
             float speedBaseSteerLimit = 1.0f;
 
+            //Dönme hýzý için maksimum deðeri ayarla
             speedBaseSteerLimit = Mathf.Clamp01(speedBaseSteerLimit);
 
+            // Eðer araba saða veya sola hareket ediyorsa, saða veya sola kuvvet uygula
             rb.AddForce(rb.transform.right * steeringMultiplier * input.x * speedBaseSteerLimit);
-            
+
+            // Maksimum dönme hýzýna göre normalize et
             float normalizedX = rb.linearVelocity.x / maxSteerVelocity;
 
-            //no bigger than 1 in magnitued
+            // Normalize edilmiþ deðeri -1 ile 1 arasýnda sýnýrla
             normalizedX = Mathf.Clamp(normalizedX, -1.0f, 1.0f);
 
 
-            //Speed Limit
+            // Arabanýn x eksenindeki hýzýný, maksimum direksiyon hýzý ile çarp ve yeni bir hýz vektörü oluþtur
             rb.linearVelocity = new Vector3(normalizedX * maxSteerVelocity, 0, rb.linearVelocity.z);
         }
 
@@ -144,75 +144,82 @@ public class CarHandler : MonoBehaviour
         }
     }
 
+    //Kuvvet deðerini ayarla
     public void SetInput(Vector2 inputVector)
     {
-        inputVector.Normalize();
+       
+        inputVector.Normalize(); // Normalize et ki deðerler -1 ile 1 arasýnda olsun
         input = inputVector;
     }
 
+    //Araba sesini güncelle
     void UpdateCarAudio()
     {
-        if (!isPlayer)
-            return;
-
+        // Arabanýn maksimum hýzýna göre normalize et
         float carMaxSpeedPercentage = rb.linearVelocity.z / maxForwardVelocity;
 
+        // Arabanýn maksimum hýzýna göre ses seviyesini ve tizliðini ayarla
         carEngineAS.pitch = carPitchAnimationCurve.Evaluate(carMaxSpeedPercentage);
 
-        if (input.y < 0 && carMaxSpeedPercentage > 0.2f)
+
+        
+        if (input.y < 0 && carMaxSpeedPercentage > 0.2f) // Eðer fren yapýlýyorsa ve hýz %20'den fazlaysa
         {
+            // Fren sesi çal
             if (!carSkidAS.isPlaying)
                 carSkidAS.Play();
 
+            // Fren sesi için ses seviyesini ayarla
             carSkidAS.volume = Mathf.Lerp(carSkidAS.volume, 1.0f, Time.deltaTime * 10);
 
         }
         else
         {
+            // Fren sesini durdur
             carSkidAS.volume = Mathf.Lerp(carSkidAS.volume, 0 , Time.deltaTime * 30);
         }
     }
 
-    void FadeOutCarAudio()
-    {
-        if (!isPlayer) return;
-
-        carEngineAS.volume = Mathf.Lerp(carEngineAS.volume, 0, Time.deltaTime * 10);
-        carSkidAS.volume = Mathf.Lerp(carSkidAS.volume, 0, Time.deltaTime * 10);
-
-    }
-
+    // Maksimum hýzý ayarla
     public void SetMaxSpeed(float newMaxSpeed)
     {
         maxForwardVelocity = newMaxSpeed;
     }
 
+    //Araba çarptý mý kontrol et
     public bool GetIsCrashed()
     {
         return isCrashed;
     }
+
+    //Araba çarptýysa durumu ayarla
     public void SetIsCrashed(bool crashed)
     {
         isCrashed = crashed;
     }
 
+
     private void OnCollisionEnter(Collision collision)
     {
+        //Çarptýðý nesne baþka bir araba ise
         if (collision.transform.root.CompareTag("Car AI"))
         {
-            Vector3 velocity = rb.linearVelocity;
+           
+            Vector3 velocity = rb.linearVelocity; // Çarpma anýndaki hýz vektörünü al
 
-            crashHandler.Crash(velocity * 45);
+            crashHandler.Crash(velocity * 45); // Çarpma kuvvetini uygula
 
-            isCrashed = true;
+            isCrashed = true; // Arabanýn çarptýðýný belirt
         }
     }
+
+    //Arabanýn durumunu sýfýrla
     public void ResetCar()
     {
-        isCrashed = false;
-        input = Vector2.zero;
-        
-        rb.linearVelocity = Vector3.zero;
-        rb.angularVelocity = Vector3.zero;
+        isCrashed = false; // Arabanýn çarpma durumunu sýfýrla
+        input = Vector2.zero; // Kuvveti sýfýrla
+
+        rb.linearVelocity = Vector3.zero; // Hýzý sýfýrla
+        rb.angularVelocity = Vector3.zero; // Açýsal hýzý sýfýrla
     }
 }

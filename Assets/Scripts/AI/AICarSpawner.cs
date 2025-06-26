@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using Unity.Mathematics;
 using UnityEngine;
 
 public class AICarSpawner : MonoBehaviour
@@ -7,9 +8,9 @@ public class AICarSpawner : MonoBehaviour
     [SerializeField]
     GameObject[] carAIPrefabs;
 
-    GameObject[] carAIPool = new GameObject[3];
+    GameObject[] carAIPool = new GameObject[1]; //4
 
-    WaitForSeconds wait = new WaitForSeconds(2f);
+    WaitForSeconds wait = new WaitForSeconds(1f); //2
 
     Transform playerCarTransform;
 
@@ -57,7 +58,7 @@ public class AICarSpawner : MonoBehaviour
     {
         playerCarTransform = GameObject.FindGameObjectWithTag("Player").transform;
 
-        if (Time.time - timeLastCarSpawned < 2)
+        if (Time.time - timeLastCarSpawned < 1f) //2
         {
             return;
         }
@@ -76,7 +77,10 @@ public class AICarSpawner : MonoBehaviour
         if (carToSpawn == null)
             return;
 
-        Vector3 spawnPosition = new Vector3 (0, 0, playerCarTransform.transform.position.z + UnityEngine.Random.Range(10,25));
+        Vector3 spawnPosition = new Vector3 (0, 0, playerCarTransform.transform.position.z + UnityEngine.Random.Range(5,10));
+
+        if (Physics.OverlapBoxNonAlloc(spawnPosition, Vector3.one * 2, overlappedCheckCollider, Quaternion.identity, otherCarsLayerMask) > 0)
+            return; //Diðer arabalarýn üstüne spawn etme
 
         carToSpawn.transform.position = spawnPosition;
         carToSpawn.SetActive(true);
@@ -91,10 +95,10 @@ public class AICarSpawner : MonoBehaviour
             if (!aiCar.activeInHierarchy)
                 continue;
 
-            if (aiCar.transform.position.z - playerCarTransform.position.z > 200)
+            if (aiCar.transform.position.z - playerCarTransform.position.z > 11) //200
                 aiCar.SetActive(false);
 
-            if (aiCar.transform.position.z - playerCarTransform.position.z < -50)
+            if (aiCar.transform.position.z - playerCarTransform.position.z < -11) //-50
                 aiCar.SetActive(false);
 
 

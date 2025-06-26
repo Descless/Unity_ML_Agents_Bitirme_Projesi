@@ -25,7 +25,7 @@ public class CrashHandler : MonoBehaviour
         //rb.gameObject.SetActive(true);
         rb.isKinematic = false;
         rb.interpolation = RigidbodyInterpolation.Interpolate;
-        rb.AddForce(Vector3.right * 200 + externalForce, ForceMode.Force);
+        rb.AddForce(Vector3.right * 100 + externalForce, ForceMode.Force);
         rb.AddTorque(Random.insideUnitSphere * 0.5f, ForceMode.Impulse);
     }
 }
